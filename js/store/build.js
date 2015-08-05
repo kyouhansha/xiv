@@ -1,15 +1,31 @@
-import { Store, toImmutable } from 'nuclear-js'
+import { Store } from 'nuclear-js'
 
 import constants from '../constants'
+import { toOrderedImmutable } from '../util'
+
+const none = constants.get('none')
 
 const buildStore = Store({
     getInitialState () {
-        return toImmutable({})
+        return toOrderedImmutable({
+            items: {}
+        })
     },
     initialize () {
-        this.on('SET_JOB', (state, id) => toImmutable({ job: constants.getIn(['jobs', id]) }))
+        this.on('SET_JOB', (state, id) => {
+            return toOrderedImmutable({
+                job: constants.getIn(['jobs', id]),
+                items: {}
+            })
+        })
 
-        this.on('FILL_BUILD_SLOT', (state, [slot, item]) => state.setIn(['items', slot.get('id')], item))
+        this.on('SET_BUILD_SLOT', (state, [slot, item]) => {
+            var path = ['items', slot.get('id')]
+
+            return (item === none)
+                ? state.deleteIn(path)
+                : state.setIn(path, item)
+        })
     }
 })
 

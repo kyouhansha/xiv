@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --progress --colors",
     "build": "webpack --progress --colors"
   },
-  "author": "Jimmy Sanford",
+  "author": "kyouhansha@users.noreply.github.com",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^5.8.5",

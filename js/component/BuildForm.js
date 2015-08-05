@@ -31,9 +31,30 @@ var BuildForm = React.createClass({
                 <h2>
                     {job.getIn(['name', LANG])}
                 </h2>
-                {this.renderGearSlots()}
+                <div>
+                    {this.renderBuildStats()}
+                </div>
+                <div>
+                    {this.renderGearSlots()}
+                </div>
             </div>
         )
+    },
+    renderBuildStats () {
+        var { build } = this.state
+        var items = build.get('items', none)
+        var job = build.get('job', none)
+
+        return job.get('secondary_stats')
+            .valueSeq()
+            .map(v => {
+                return (
+                    <div key={v}>
+                        <span>{v}</span>
+                        <span>{calculateBuildStat(items, v)}</span>
+                    </div>
+                )
+            })
     },
     renderGearItems (slot) {
         var { build, gear } = this.state
@@ -68,9 +89,18 @@ var BuildForm = React.createClass({
             })
     },
     handleGearItemClick (slot, item, e) {
-        actions.fillBuildSlot(slot, item)
+        var { build } = this.state
+
+        if (build.getIn(['items', slot.get('id')]) === item) item = none
+
+        actions.setBuildSlot(slot, item)
     }
 })
+
+function calculateBuildStat (items, stat) {
+    return items
+        .reduce((r, v) => r += v.getIn(['stats', stat], 0), 0)
+}
 
 function isItemSlottable (item, slot) {
     var slotKey = slot.get('compatibility') || slot.get('id')

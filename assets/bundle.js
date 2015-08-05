@@ -35323,8 +35323,40 @@
 	                null,
 	                job.getIn(['name', LANG])
 	            ),
-	            this.renderGearSlots()
+	            _react2['default'].createElement(
+	                'div',
+	                null,
+	                this.renderBuildStats()
+	            ),
+	            _react2['default'].createElement(
+	                'div',
+	                null,
+	                this.renderGearSlots()
+	            )
 	        );
+	    },
+	    renderBuildStats: function renderBuildStats() {
+	        var build = this.state.build;
+
+	        var items = build.get('items', none);
+	        var job = build.get('job', none);
+
+	        return job.get('secondary_stats').valueSeq().map(function (v) {
+	            return _react2['default'].createElement(
+	                'div',
+	                { key: v },
+	                _react2['default'].createElement(
+	                    'span',
+	                    null,
+	                    v
+	                ),
+	                _react2['default'].createElement(
+	                    'span',
+	                    null,
+	                    calculateBuildStat(items, v)
+	                )
+	            );
+	        });
 	    },
 	    renderGearItems: function renderGearItems(slot) {
 	        var _this = this;
@@ -35384,9 +35416,19 @@
 	        });
 	    },
 	    handleGearItemClick: function handleGearItemClick(slot, item, e) {
-	        _actions2['default'].fillBuildSlot(slot, item);
+	        var build = this.state.build;
+
+	        if (build.getIn(['items', slot.get('id')]) === item) item = none;
+
+	        _actions2['default'].setBuildSlot(slot, item);
 	    }
 	});
+
+	function calculateBuildStat(items, stat) {
+	    return items.reduce(function (r, v) {
+	        return r += v.getIn(['stats', stat], 0);
+	    }, 0);
+	}
 
 	function isItemSlottable(item, slot) {
 	    var slotKey = slot.get('compatibility') || slot.get('id');
@@ -35430,8 +35472,8 @@
 	var _reactor2 = _interopRequireDefault(_reactor);
 
 	var actions = {
-	    fillBuildSlot: function fillBuildSlot(slot, item) {
-	        _reactor2['default'].dispatch('FILL_BUILD_SLOT', [slot, item]);
+	    setBuildSlot: function setBuildSlot(slot, item) {
+	        _reactor2['default'].dispatch('SET_BUILD_SLOT', [slot, item]);
 	    },
 	    setJob: function setJob(job) {
 	        _reactor2['default'].dispatch('SET_JOB', job);
@@ -35461,21 +35503,33 @@
 
 	var _constants2 = _interopRequireDefault(_constants);
 
+	var _util = __webpack_require__(204);
+
+	var none = _constants2['default'].get('none');
+
 	var buildStore = (0, _nuclearJs.Store)({
 	    getInitialState: function getInitialState() {
-	        return (0, _nuclearJs.toImmutable)({});
+	        return (0, _util.toOrderedImmutable)({
+	            items: {}
+	        });
 	    },
 	    initialize: function initialize() {
 	        this.on('SET_JOB', function (state, id) {
-	            return (0, _nuclearJs.toImmutable)({ job: _constants2['default'].getIn(['jobs', id]) });
+	            return (0, _util.toOrderedImmutable)({
+	                job: _constants2['default'].getIn(['jobs', id]),
+	                items: {}
+	            });
 	        });
 
-	        this.on('FILL_BUILD_SLOT', function (state, _ref) {
+	        this.on('SET_BUILD_SLOT', function (state, _ref) {
 	            var _ref2 = _slicedToArray(_ref, 2);
 
 	            var slot = _ref2[0];
 	            var item = _ref2[1];
-	            return state.setIn(['items', slot.get('id')], item);
+
+	            var path = ['items', slot.get('id')];
+
+	            return item === none ? state.deleteIn(path) : state.setIn(path, item);
 	        });
 	    }
 	});
@@ -35505,7 +35559,9 @@
 
 	var gearStore = (0, _nuclearJs.Store)({
 	    getInitialState: function getInitialState() {
-	        return (0, _util.toOrderedImmutable)(_dataGear2['default']);
+	        return (0, _util.toOrderedImmutable)(_dataGear2['default']).toKeyedSeq().mapKeys(function (k, v) {
+	            return v.get('id');
+	        }).toOrderedMap();
 	    },
 	    initialize: function initialize() {}
 	});
