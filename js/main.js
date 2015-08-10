@@ -5,6 +5,7 @@ import reactor from './reactor'
 import routes from './routes'
 import buildStore from './store/build'
 import gearStore from './store/gear'
+import styles from '../css/main.styl'
 
 reactor.registerStores({
     build: buildStore,

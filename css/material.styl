@@ -1,0 +1,12 @@
+@require('constants.styl')
+
+/* colors */
+
+$color-canvas = getColor('white')
+$color-canvas--alt = darken(getColor('white'), 5%)
+$color-text = getColor('black')
+
+/* functions */
+
+getTextColor(level = 'primary', fore = $color-text, back = $color-canvas)
+    return blend(rgba(fore, $textOpacity[level]), back)

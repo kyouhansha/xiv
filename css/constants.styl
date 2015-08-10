@@ -1,0 +1,62 @@
+/* colors */
+
+$color = {}
+
+// black & white
+
+$color['black'] = { '500': #000 }
+$color['white'] = { '500': #fff }
+
+// palette colors
+
+$color['indigo'] = {
+    '100':  #c5cae9,
+    '500':  #3f51b5,
+    '700':  #303f9f,
+    'a100': #8c9eff,
+    'a200': #536dfe,
+    'a400': #3d5afe,
+    'a700': #304ffe
+}
+
+$color['pink'] = {
+    '100':  #f8bbd0,
+    '500':  #e91e63,
+    '700':  #c2185b,
+    'a100': #ff80ab,
+    'a200': #ff4081,
+    'a400': #f50057,
+    'a700': #c51162
+}
+
+/* text */
+
+$textOpacity = {
+    'primary':   0.87,
+    'secondary': 0.54,
+    'disabled':  0.26
+}
+
+$fontSize = {
+    'button':   { 'size': 14px, 'weight': 500 },
+    'caption':  { 'size': 12px, 'weight': 400 },
+    'body1':    { 'size': 14px, 'weight': 400 },
+    'body2':    { 'size': 14px, 'weight': 500 },
+    'subhead':  { 'size': 16px, 'weight': 400 },
+    'title':    { 'size': 20px, 'weight': 500 },
+    'headline': { 'size': 24px, 'weight': 400 },
+    'display1': { 'size': 34px, 'weight': 400 },
+    'display2': { 'size': 45px, 'weight': 400 },
+    'display3': { 'size': 56px, 'weight': 400 }
+}
+
+/* functions */
+
+getColor(color, hue = '500')
+    return $color[color][hue]
+
+/* mixins */
+
+applyFontSize(style)
+    font-size: $fontSize[style]['size']
+    font-weight: $fontSize[style]['weight']

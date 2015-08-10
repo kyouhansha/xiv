@@ -27,8 +27,8 @@ var BuildForm = React.createClass({
         var job = build.get('job', none)
 
         return (
-            <div>
-                <h2>
+            <div className="page--buildForm">
+                <h2 className="page-title">
                     {job.getIn(['name', LANG])}
                 </h2>
                 <div>

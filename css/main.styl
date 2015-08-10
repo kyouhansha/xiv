@@ -1,0 +1,78 @@
+@require('constants.styl')
+@require('material.styl')
+
+*
+    box-sizing: border-box
+
+body
+    color: getTextColor()
+    font-family: 'Roboto'
+    line-height: 1.0
+    margin: 0px
+    text-rendering: optimizeLegibility
+
+h1, h2, h3, h4, h5, h6
+    font-weight: 400
+
+a
+    text-decoration: none
+
+.icon
+    align-items: center
+    display: inline-flex
+    height: 48px
+    justify-content: center
+    width: 48px
+
+.appBar
+    align-items: center
+    box-shadow: 0px 1px $color-canvas--alt
+    display: flex
+    height: 64px
+    padding: 8px 20px 8px 0px
+
+.appBar-title
+    font-size: 24px
+    margin-left: 24px
+    margin-right: auto
+
+.appBar-link
+    margin: 0px 12px
+
+.page-title
+    applyFontSize('headline')
+    margin: 1.5em 1em 1em
+
+.gridList
+    display: flex
+    flex-wrap: wrap
+    justify-content: center
+
+.gridList-cell
+    border-color: $color-canvas
+    border-style: solid
+    border-width: 0px 2px 0px 0px
+    display: flex
+    flex: none
+    height: 160px
+    justify-content: flex-end
+    margin-bottom: 4px
+    width: 50%
+
+    &:nth-of-type(2n)
+        border-width: 0px 0px 0px 2px
+        justify-content: flex-start
+
+    &:nth-last-of-type(1)
+        border-width: 0px
+        justify-content: center
+        margin-bottom: 0px
+
+.gridList-tile
+    align-items: center
+    background-color: $color-canvas--alt
+    display: flex
+    flex: 1 1 0px
+    justify-content: center
+    max-width: 320px
+    min-width: 158px
