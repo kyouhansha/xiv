@@ -15,15 +15,15 @@ var App = React.createClass({
             <div className="app">
                 <header className="appBar">
                     <a href="/" className="appBar-title"
-                        onClick={ev => this.handleClickLink('/', ev)}>
+                        onClick={ev => this.handleLinkClick('/', ev)}>
                         xiv
                     </a>
                     <a href="/build" className="appBar-link"
-                        onClick={ev => this.handleClickLink('build', ev)}>
+                        onClick={ev => this.handleLinkClick('build', ev)}>
                         Build
                     </a>
                     <a href="/about" className="appBar-link"
-                        onClick={ev => this.handleClickLink('about', ev)}>
+                        onClick={ev => this.handleLinkClick('about', ev)}>
                         About
                     </a>
                 </header>
@@ -31,7 +31,7 @@ var App = React.createClass({
             </div>
         )
     },
-    handleClickLink (page, ev) {
+    handleLinkClick (page, ev) {
         ev.preventDefault()
 
         this.transitionTo(page)

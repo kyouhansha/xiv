@@ -3,6 +3,7 @@ import React from 'react'
 import actions from '../actions'
 import constants from '../constants'
 import reactor from '../reactor'
+import { joinClassNames } from '../util'
 
 const LANG = 'en'
 const none = constants.get('none')
@@ -31,10 +32,10 @@ var BuildForm = React.createClass({
                 <h2 className="page-title">
                     {job.getIn(['name', LANG])}
                 </h2>
-                <div>
+                <div className="build-stats">
                     {this.renderBuildStats()}
                 </div>
-                <div>
+                <div className="build-slots">
                     {this.renderGearSlots()}
                 </div>
             </div>
@@ -49,43 +50,66 @@ var BuildForm = React.createClass({
             .valueSeq()
             .map(v => {
                 return (
-                    <div key={v}>
+                    <div key={v} className="build-stat">
                         <span>{v}</span>
                         <span>{calculateBuildStat(items, v)}</span>
                     </div>
                 )
             })
     },
-    renderGearItems (slot) {
+    renderGearItems (slot, slotGear) {
         var { build, gear } = this.state
 
-        return gear
-            .entrySeq()
-            .filter(([k, v]) => isItemSlottable(v, slot))
-            .map(([k, v]) => {
-                var style = {
-                    fontStyle: build.getIn(['items', slot.get('id')]) === v ? 'italic' : 'normal'
-                }
+        return slotGear.map(([k, v]) => {
+            var isSelected = (build.getIn(['items', slot.get('id')]) === v)
 
-                return (
-                    <li key={k} style={style} onClick={e => this.handleGearItemClick(slot, v, e)}>
-                        {v.getIn(['name', LANG])}
-                    </li>
-                )
-            })
+            var listItemProps = {
+                key: k,
+                className: joinClassNames({
+                    'build-item': true,
+                    'is-selected': isSelected
+                }),
+                onClick: e => this.handleGearItemClick(slot, v, e)
+            }
+
+            return (
+                <li {...listItemProps}>
+                    <div className="build-item-header">
+                        <div className="build-item-image"></div>
+                        <div className="build-item-titles">
+                            <div className="build-item-name">
+                                {v.getIn(['name', LANG])}
+                            </div>
+                            <div className="build-item-itemLevel">
+                                Item Level 210
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            )
+        })
     },
     renderGearSlots () {
+        var gear = this.state.gear.entrySeq()
+
         return constants.get('slots')
             .entrySeq()
-            .map(([k, v]) => {
-                return (
-                    <div key={k}>
-                        <h3>{v.getIn(['name', LANG])}</h3>
-                        <ul>
-                            {this.renderGearItems(v)}
-                        </ul>
-                    </div>
-                )
+            .map(([slotId, slot]) => {
+                var slotGear = gear
+                    .filter(([itemId, item]) => isItemSlottable(item, slot))
+
+                if (slotGear.count()) {
+                    return (
+                        <div key={slotId} className="build-slot">
+                            <h3 className="build-slot-name">{slot.getIn(['name', LANG])}</h3>
+                            <ul className="build-items">
+                                {this.renderGearItems(slot, slotGear)}
+                            </ul>
+                        </div>
+                    )
+                } else {
+                    return null
+                }
             })
     },
     handleGearItemClick (slot, item, e) {

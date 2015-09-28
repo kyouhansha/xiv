@@ -10,9 +10,11 @@ body
     line-height: 1.0
     margin: 0px
     text-rendering: optimizeLegibility
+    -webkit-font-smoothing: antialiased
 
 h1, h2, h3, h4, h5, h6
     font-weight: 400
+    margin: 0px
 
 a
     text-decoration: none
@@ -42,6 +44,14 @@ a
 .page-title
     applyFontSize('headline')
     margin: 1.5em 1em 1em
+
+.subheader
+    applyFontSize('body2')
+    align-items: center
+    color: getTextColor('secondary')
+    display: flex
+    height: 48px
+    padding: 16px
 
 .gridList
     display: flex
@@ -76,3 +86,42 @@ a
     justify-content: center
     max-width: 320px
     min-width: 158px
+
+.build-slot-name
+    @extend .subheader
+
+.build-items
+    display: flex
+    margin: 0px
+    padding: 0px
+
+.build-item
+    display: block
+    height: 360px
+    list-style: none outside none
+    margin-right: 16px
+    width: 360px
+    
+    &.is-selected
+        box-shadow: inset 0px 0px 1px getTextColor('secondary')
+
+.build-item-header
+    display: flex
+    padding: 16px
+
+.build-item-image
+    background-color: getTextColor('secondary')
+    border-radius: 50%
+    height: 40px
+    margin-right: 16px
+    width: 40px
+
+.build-item-titles
+    applyFontSize('body2')
+
+.build-item-name
+    margin: 4px 0px
+
+.build-item-itemLevel
+    color: getTextColor('secondary')
+    margin: 4px 0px

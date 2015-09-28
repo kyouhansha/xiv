@@ -28,12 +28,15 @@ var Build = React.createClass({
         return constants.get('jobs')
             .entrySeq()
             .map(([k, v]) => {
-                var uri = this.makeHref('build_form', { job: k })
+                var linkProps = {
+                    className: 'gridList-tile',
+                    href: this.makeHref('build_form', { job: k }),
+                    onClick: ev => this.handleJobClick(k, ev)
+                }
 
                 return (
                     <div key={k} className="gridList-cell">
-                        <a href={uri} className="gridList-tile"
-                            onClick={ev => this.handleJobClick(k, ev)}>
+                        <a {...linkProps}>
                             {v.getIn(['name', LANG])}
                         </a>
                     </div>
