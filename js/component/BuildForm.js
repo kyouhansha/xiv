@@ -1,11 +1,12 @@
 import React from 'react'
 
+import BuildItem from './BuildItem'
 import actions from '../actions'
 import constants from '../constants'
 import reactor from '../reactor'
 import { joinClassNames } from '../util'
 
-const LANG = 'en'
+const lang = constants.get('lang')
 const none = constants.get('none')
 
 var BuildForm = React.createClass({
@@ -30,7 +31,7 @@ var BuildForm = React.createClass({
         return (
             <div className="page--buildForm">
                 <h2 className="page-title">
-                    {job.getIn(['name', LANG])}
+                    {job.getIn(['name', lang])}
                 </h2>
                 <div className="build-stats">
                     {this.renderBuildStats()}
@@ -65,6 +66,7 @@ var BuildForm = React.createClass({
 
             var listItemProps = {
                 key: k,
+                item: v,
                 className: joinClassNames({
                     'build-item': true,
                     'is-selected': isSelected
@@ -73,19 +75,7 @@ var BuildForm = React.createClass({
             }
 
             return (
-                <li {...listItemProps}>
-                    <div className="build-item-header">
-                        <div className="build-item-image"></div>
-                        <div className="build-item-titles">
-                            <div className="build-item-name">
-                                {v.getIn(['name', LANG])}
-                            </div>
-                            <div className="build-item-itemLevel">
-                                Item Level 210
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                <BuildItem {...listItemProps} />
             )
         })
     },
@@ -101,7 +91,7 @@ var BuildForm = React.createClass({
                 if (slotGear.count()) {
                     return (
                         <div key={slotId} className="build-slot">
-                            <h3 className="build-slot-name">{slot.getIn(['name', LANG])}</h3>
+                            <h3 className="build-slot-name">{slot.getIn(['name', lang])}</h3>
                             <ul className="build-items">
                                 {this.renderGearItems(slot, slotGear)}
                             </ul>

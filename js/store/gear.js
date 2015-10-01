@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import { Store } from 'nuclear-js'
 
 import actions from '../actions'
-import { remoteGear } from '../remote'
+import remote from '../remote'
 import { toOrderedImmutable } from '../util'
 
 const gearStore = Store({
@@ -12,12 +12,11 @@ const gearStore = Store({
     initialize () {
         this.on('SET_GEAR', (state, data) => {
             return toOrderedImmutable(data)
-                .toKeyedSeq()
-                .mapKeys((k, v) => v.get('id'))
-                .toOrderedMap()
         })
 
-        remoteGear.once("value", data => actions.setGear(data.val()))
+        remote
+            .child('gear')
+            .once('value', data => actions.setGear(data.val()))
     }
 })
 

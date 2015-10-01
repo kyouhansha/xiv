@@ -4,7 +4,7 @@ import { Navigation, State } from 'react-router'
 import constants from '../constants'
 import reactor from '../reactor'
 
-const LANG = 'en'
+const lang = constants.get('lang')
 const none = constants.get('none')
 
 var Build = React.createClass({
@@ -37,7 +37,7 @@ var Build = React.createClass({
                 return (
                     <div key={k} className="gridList-cell">
                         <a {...linkProps}>
-                            {v.getIn(['name', LANG])}
+                            {v.getIn(['name', lang])}
                         </a>
                     </div>
                 )

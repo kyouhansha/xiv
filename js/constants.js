@@ -1,6 +1,7 @@
 import { toOrderedImmutable } from './util'
 
 const constants = toOrderedImmutable({
+    lang: "en",
     none: Symbol("none"),
     jobs: {
         "pld": {

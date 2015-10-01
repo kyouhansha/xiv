@@ -6,7 +6,7 @@
 
 body
     color: getTextColor()
-    font-family: 'Roboto'
+    font-family: $fontFamily
     line-height: 1.0
     margin: 0px
     text-rendering: optimizeLegibility
@@ -19,12 +19,36 @@ h1, h2, h3, h4, h5, h6
 a
     text-decoration: none
 
+button, input
+    font-family: $fontFamily
+    outline: 0px none
+
 .icon
     align-items: center
     display: inline-flex
     height: 48px
     justify-content: center
     width: 48px
+
+.action
+    background: none
+    border-width: 0px
+    height: 48px
+    margin: 0px 8px
+    padding: 6px 0px
+    -webkit-appearance: none
+
+.action-text
+    applyFontSize('body2')
+    align-items: center
+    display: flex
+    min-width: 64px
+    padding: 0px 8px
+    justify-content: center
+    text-transform: uppercase
+
+.action--flat
+    @extend .action
 
 .appBar
     align-items: center
@@ -97,10 +121,10 @@ a
 
 .build-item
     display: block
-    height: 360px
+    height: 320px
     list-style: none outside none
     margin-right: 16px
-    width: 360px
+    width: 320px
     
     &.is-selected
         box-shadow: inset 0px 0px 1px getTextColor('secondary')
@@ -125,3 +149,23 @@ a
 .build-item-itemLevel
     color: getTextColor('secondary')
     margin: 4px 0px
+
+.build-item-tabs
+    display: flex
+
+.build-item-tab
+    applyFontSize('body2')
+    align-items: center
+    display: flex
+    flex: 0 0 50%
+    height: 48px
+    justify-content: center
+    min-width: 0px
+    text-transform: uppercase
+
+.build-item-panes
+    height: 148px
+
+.build-item-actions
+    display: flex
+    padding: 2px 0px
