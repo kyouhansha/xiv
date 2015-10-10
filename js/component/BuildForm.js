@@ -1,7 +1,7 @@
 import React from 'react'
 
-import BuildItem from './BuildItem'
 import BuildTableHeader from './BuildTableHeader'
+import BuildTableRow from './BuildTableRow'
 import actions from '../actions'
 import constants from '../constants'
 import reactor from '../reactor'
@@ -126,7 +126,7 @@ var BuildForm = React.createClass({
             }
 
             return (
-                <BuildItem {...rowProps} />
+                <BuildTableRow {...rowProps} />
             )
         })
     },
