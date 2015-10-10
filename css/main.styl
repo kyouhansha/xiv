@@ -121,7 +121,7 @@ button, input
     max-width: 320px
     min-width: 158px
 
-.build-slots
+.build-table
     padding-bottom: 96px
 
 .build-slot-name
@@ -203,8 +203,14 @@ button, input
     display: flex
     flex: 1 0 40px
     justify-content: flex-end
-    margin-right: 56px
+    margin-right: 40px
     min-width: 40px
+    text-transform: uppercase
 
     &:nth-last-of-type(1)
         margin-right: 24px
+
+.build-table-header
+    applyFontSize('caption')
+    color: getTextColor('secondary')
+    font-weight: 500

@@ -6,17 +6,20 @@ import constants from '../constants'
 import { toOrderedImmutable } from '../util'
 
 const lang = constants.get('lang')
+const zeroText = '--'
 
 var BuildItem = React.createClass({
     render () {
         var { item, job, slot, ...props } = this.props
+        var itemStats = item.get('stats')
         var children = []
 
         children.push(
             this.renderControl(),
             this.renderName(item),
             this.renderItemLevel(item),
-            ...this.renderStats(item, job)
+            ...this.renderStats(itemStats, job.get('primary_stats')),
+            ...this.renderStats(itemStats, job.get('secondary_stats'))
         )
 
         return (
@@ -46,11 +49,8 @@ var BuildItem = React.createClass({
             </div>
         )
     },
-    renderStats (item, job) {
-        var itemStats = item.get('stats')
-        const zeroText = '--'
-
-        return job.get('secondary_stats')
+    renderStats (itemStats, jobStats) {
+        return jobStats
             .map(v => (
                 <div key={v} className="build-item-stat">
                     {itemStats.get(v) || zeroText}

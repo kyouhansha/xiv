@@ -1,6 +1,7 @@
 import React from 'react'
 
 import BuildItem from './BuildItem'
+import BuildTableHeader from './BuildTableHeader'
 import actions from '../actions'
 import constants from '../constants'
 import reactor from '../reactor'
@@ -33,14 +34,40 @@ var BuildForm = React.createClass({
                 <h2 className="page-title">
                     {job.getIn(['name', lang])}
                 </h2>
-                <div className="build-slots">
-                    {this.renderGearSlots()}
+                <div className="build-table">
+                    {this.renderTableHeader()}
+                    <div className="build-slots">
+                        {this.renderBuildSlots()}
+                    </div>
                 </div>
                 <div className="build-stats">
                     {this.renderBuildStats()}
                 </div>
             </div>
         )
+    },
+    renderBuildSlots () {
+        var gear = this.state.gear.entrySeq()
+
+        return constants.get('slots')
+            .entrySeq()
+            .map(([slotId, slot]) => {
+                var slotGear = gear
+                    .filter(([itemId, item]) => isItemSlottable(item, slot))
+
+                if (slotGear.count()) {
+                    return (
+                        <div key={slotId} className="build-slot">
+                            <h3 className="build-slot-name">{slot.getIn(['name', lang])}</h3>
+                            <ul className="build-items">
+                                {this.renderTableRows(slot, slotGear)}
+                            </ul>
+                        </div>
+                    )
+                } else {
+                    return null
+                }
+            })
     },
     renderBuildStats () {
         var { build } = this.state
@@ -62,14 +89,31 @@ var BuildForm = React.createClass({
                 )
             })
     },
-    renderGearItems (slot, slotGear) {
+    renderTableHeader () {
+        var { build } = this.state
+        var job = build.get('job', none)
+
+        var headerProps = {
+            key: 'header',
+            job: job,
+            className: joinClassNames({
+                'build-item': true,
+                'build-table-header': true
+            }),
+        }
+
+        return (
+            <BuildTableHeader {...headerProps} />
+        )
+    },
+    renderTableRows (slot, slotGear) {
         var { build, gear } = this.state
         var job = build.get('job', none)
 
         return slotGear.map(([k, v]) => {
             var isSelected = (build.getIn(['items', slot.get('id')]) === v)
 
-            var listItemProps = {
+            var rowProps = {
                 key: k,
                 item: v,
                 job: job,
@@ -78,38 +122,15 @@ var BuildForm = React.createClass({
                     'build-item': true,
                     'is-selected': isSelected
                 }),
-                onClick: e => this.handleGearItemClick(slot, v, e)
+                onClick: e => this.selectItem(slot, v, e)
             }
 
             return (
-                <BuildItem {...listItemProps} />
+                <BuildItem {...rowProps} />
             )
         })
     },
-    renderGearSlots () {
-        var gear = this.state.gear.entrySeq()
-
-        return constants.get('slots')
-            .entrySeq()
-            .map(([slotId, slot]) => {
-                var slotGear = gear
-                    .filter(([itemId, item]) => isItemSlottable(item, slot))
-
-                if (slotGear.count()) {
-                    return (
-                        <div key={slotId} className="build-slot">
-                            <h3 className="build-slot-name">{slot.getIn(['name', lang])}</h3>
-                            <ul className="build-items">
-                                {this.renderGearItems(slot, slotGear)}
-                            </ul>
-                        </div>
-                    )
-                } else {
-                    return null
-                }
-            })
-    },
-    handleGearItemClick (slot, item, e) {
+    selectItem (slot, item, e) {
         var { build } = this.state
 
         if (build.getIn(['items', slot.get('id')]) === item) item = none
