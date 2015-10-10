@@ -16,7 +16,7 @@ var Build = React.createClass({
     },
     render () {
         return (
-            <div className="page--build">
+            <div className="page" data-page="build">
                 <h2 className="page-title">Build</h2>
                 <div className="gridList">
                     {this.renderJobTiles()}

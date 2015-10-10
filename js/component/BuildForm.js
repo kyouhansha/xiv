@@ -29,15 +29,15 @@ var BuildForm = React.createClass({
         var job = build.get('job', none)
 
         return (
-            <div className="page--buildForm">
+            <div className="page" data-page="buildForm">
                 <h2 className="page-title">
                     {job.getIn(['name', lang])}
                 </h2>
-                <div className="build-stats">
-                    {this.renderBuildStats()}
-                </div>
                 <div className="build-slots">
                     {this.renderGearSlots()}
+                </div>
+                <div className="build-stats">
+                    {this.renderBuildStats()}
                 </div>
             </div>
         )
@@ -52,14 +52,19 @@ var BuildForm = React.createClass({
             .map(v => {
                 return (
                     <div key={v} className="build-stat">
-                        <span>{v}</span>
-                        <span>{calculateBuildStat(items, v)}</span>
+                        <div className="build-stat-label">
+                            {v}
+                        </div>
+                        <div className="build-stat-value">
+                            {calculateBuildStat(items, v)}
+                        </div>
                     </div>
                 )
             })
     },
     renderGearItems (slot, slotGear) {
         var { build, gear } = this.state
+        var job = build.get('job', none)
 
         return slotGear.map(([k, v]) => {
             var isSelected = (build.getIn(['items', slot.get('id')]) === v)
@@ -67,6 +72,8 @@ var BuildForm = React.createClass({
             var listItemProps = {
                 key: k,
                 item: v,
+                job: job,
+                slot: slot,
                 className: joinClassNames({
                     'build-item': true,
                     'is-selected': isSelected

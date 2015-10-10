@@ -3,8 +3,14 @@
 /* colors */
 
 $color-canvas = getColor('white')
-$color-canvas--alt = darken(getColor('white'), 5%)
+$color-canvas--alt = getColor('grey', '100')
+$color-canvas--border = getColor('grey', '200')
+$color-divider = rgba(getColor('black'), 0.12)
 $color-text = getColor('black')
+
+$color-table-row = $color-canvas
+$color-table-row--hover = getColor('grey', '200')
+$color-table-row--selected = getColor('grey', '100')
 
 /* functions */
 

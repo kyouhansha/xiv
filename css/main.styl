@@ -50,9 +50,13 @@ button, input
 .action--flat
     @extend .action
 
+.app
+    background-color: $color-canvas--alt
+
 .appBar
     align-items: center
-    box-shadow: 0px 1px $color-canvas--alt
+    background-color: $color-canvas
+    box-shadow: inset 0px -1px $color-canvas--border
     display: flex
     height: 64px
     padding: 8px 20px 8px 0px
@@ -65,9 +69,15 @@ button, input
 .appBar-link
     margin: 0px 12px
 
+.page
+    background-color: $color-canvas
+    margin: 0px auto
+    padding: 0px 24px
+    width: 1080px
+
 .page-title
     applyFontSize('headline')
-    margin: 1.5em 1em 1em
+    padding: 1.5em 1em 1em
 
 .subheader
     applyFontSize('body2')
@@ -111,27 +121,60 @@ button, input
     max-width: 320px
     min-width: 158px
 
+.build-slots
+    padding-bottom: 96px
+
 .build-slot-name
     @extend .subheader
+    margin-top: 24px
+
+.build-stats
+    background-color: $color-canvas
+    bottom: 0px
+    box-shadow: inset 0px 1px $color-canvas--border
+    display: flex
+    left: 50vw
+    margin-left: -540px
+    position: fixed
+    width: 1080px
+
+.build-stat
+    flex: 0 1 100%
+    min-width: 0px
+    padding: 12px 0px
+    text-align: center
+
+.build-stat-label
+    applyFontSize('body2')
+    color: getTextColor('secondary')
+    line-height: 24px
+    text-transform: uppercase
+
+.build-stat-value
+    applyFontSize('headline')
+    line-height: 24px
 
 .build-items
-    display: flex
+    display: block
     margin: 0px
     padding: 0px
 
 .build-item
-    display: block
-    height: 320px
+    applyFontSize('body1')
+    align-items: center
+    background-color: $color-table-row
+    box-shadow: inset 0px -1px $color-divider
+    display: flex
+    height: 48px
     list-style: none outside none
-    margin-right: 16px
-    width: 320px
+    margin: 0px
+    padding: 0px
     
     &.is-selected
-        box-shadow: inset 0px 0px 1px getTextColor('secondary')
-
-.build-item-header
-    display: flex
-    padding: 16px
+        background-color: $color-table-row--selected
+    
+    &:hover
+        background-color: $color-table-row--hover
 
 .build-item-image
     background-color: getTextColor('secondary')
@@ -140,32 +183,28 @@ button, input
     margin-right: 16px
     width: 40px
 
-.build-item-titles
-    applyFontSize('body2')
-
-.build-item-name
-    margin: 4px 0px
-
-.build-item-itemLevel
-    color: getTextColor('secondary')
-    margin: 4px 0px
-
-.build-item-tabs
-    display: flex
-
-.build-item-tab
-    applyFontSize('body2')
+.build-item-control
     align-items: center
     display: flex
-    flex: 0 0 50%
-    height: 48px
+    flex: 0 0 66px
     justify-content: center
-    min-width: 0px
-    text-transform: uppercase
+    min-width: 66px
 
-.build-item-panes
-    height: 148px
-
-.build-item-actions
+.build-item-name
+    align-items: center
     display: flex
-    padding: 2px 0px
+    flex: 1 0 300px
+    margin-right: 24px
+    min-width: 300px
+
+.build-item-ilvl,
+.build-item-stat
+    align-items: center
+    display: flex
+    flex: 1 0 40px
+    justify-content: flex-end
+    margin-right: 56px
+    min-width: 40px
+
+    &:nth-last-of-type(1)
+        margin-right: 24px
