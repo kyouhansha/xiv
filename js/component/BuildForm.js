@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React from 'react'
 
 import BuildTableHeader from './BuildTableHeader'
@@ -5,10 +6,16 @@ import BuildTableRow from './BuildTableRow'
 import actions from '../actions'
 import constants from '../constants'
 import reactor from '../reactor'
-import { joinClassNames } from '../util'
+import { calculateBuildStat, joinClassNames } from '../util'
 
 const lang = constants.get('lang')
 const none = constants.get('none')
+
+const T = Immutable.fromJS({
+    "item_level": {
+        "en": "Item Level"
+    }
+})
 
 var BuildForm = React.createClass({
     mixins: [reactor.ReactMixin],
@@ -40,11 +47,47 @@ var BuildForm = React.createClass({
                         {this.renderBuildSlots()}
                     </div>
                 </div>
+                <div className="build-items">
+                    {this.renderBuildItems()}
+                </div>
                 <div className="build-stats">
                     {this.renderBuildStats()}
                 </div>
             </div>
         )
+    },
+    renderBuildItems () {
+        var { build } = this.state
+        var items = build.get('items', none)
+
+        return constants.get('slots')
+            .entrySeq()
+            .map(([slotId, slot]) => {
+                var item = items.get(slotId, none)
+
+                if (item === none) return null
+
+                let subhead = [
+                    T.getIn(['item_level', lang]),
+                    item.get('item_level'),
+                    slot.getIn(['name', lang])
+                ].join(' ')
+
+                return (
+                    <div key={slotId} className="build-item">
+                        <div className="build-item-image" />
+                        <div className="build-item-header">
+                            <div className="build-item-name">
+                                {item.getIn(['name', lang])}
+                            </div>
+                            <div className="build-item-subhead">
+                                {subhead}
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+            .toArray()
     },
     renderBuildSlots () {
         var gear = this.state.gear.entrySeq()
@@ -55,19 +98,20 @@ var BuildForm = React.createClass({
                 var slotGear = gear
                     .filter(([itemId, item]) => isItemSlottable(item, slot))
 
-                if (slotGear.count()) {
-                    return (
-                        <div key={slotId} className="build-slot">
-                            <h3 className="build-slot-name">{slot.getIn(['name', lang])}</h3>
-                            <ul className="build-items">
-                                {this.renderTableRows(slot, slotGear)}
-                            </ul>
-                        </div>
-                    )
-                } else {
-                    return null
-                }
+                if (!slotGear.count()) return null
+
+                return (
+                    <div key={slotId} className="build-slot">
+                        <h3 className="build-slot-name">
+                            {slot.getIn(['name', lang])}
+                        </h3>
+                        <ul className="build-slot-items">
+                            {this.renderTableRows(slot, slotGear)}
+                        </ul>
+                    </div>
+                )
             })
+            .toArray()
     },
     renderBuildStats () {
         var { build } = this.state
@@ -88,6 +132,7 @@ var BuildForm = React.createClass({
                     </div>
                 )
             })
+            .toArray()
     },
     renderTableHeader () {
         var { build } = this.state
@@ -95,9 +140,10 @@ var BuildForm = React.createClass({
 
         var headerProps = {
             key: 'header',
+            build: build,
             job: job,
             className: joinClassNames({
-                'build-item': true,
+                'build-slot-item': true,
                 'build-table-header': true
             }),
         }
@@ -119,7 +165,7 @@ var BuildForm = React.createClass({
                 job: job,
                 slot: slot,
                 className: joinClassNames({
-                    'build-item': true,
+                    'build-slot-item': true,
                     'is-selected': isSelected
                 }),
                 onClick: e => this.selectItem(slot, v, e)
@@ -138,11 +184,6 @@ var BuildForm = React.createClass({
         actions.setBuildSlot(slot, item)
     }
 })
-
-function calculateBuildStat (items, stat) {
-    return items
-        .reduce((r, v) => r += v.getIn(['stats', stat], 0), 0)
-}
 
 function isItemSlottable (item, slot) {
     var slotKey = slot.get('compatibility') || slot.get('id')

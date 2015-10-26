@@ -3,7 +3,7 @@ import React from 'react'
 
 import Action from './Action'
 import constants from '../constants'
-import { toOrderedImmutable } from '../util'
+import { calculateBuildStat, toOrderedImmutable } from '../util'
 
 const lang = constants.get('lang')
 
@@ -18,15 +18,16 @@ const T = Immutable.fromJS({
 
 var BuildTableHeader = React.createClass({
     render () {
-        var { job, ...props } = this.props
+        var { build, job, ...props } = this.props
+        var items = build.get('items')
         var children = []
 
         children.push(
             this.renderControl(),
             this.renderName(),
             this.renderItemLevel(),
-            ...this.renderStats(job.get('primary_stats')),
-            ...this.renderStats(job.get('secondary_stats'))
+            ...this.renderStats(job.get('primary_stats'), items),
+            ...this.renderStats(job.get('secondary_stats'), items)
         )
 
         return (
@@ -37,32 +38,41 @@ var BuildTableHeader = React.createClass({
     },
     renderControl () {
         return (
-            <div key="control" className="build-item-control">
+            <div key="control" className="build-slot-item-control">
                 <i className="icon icon--touch" data-icon="checkbox" />
             </div>
         )
     },
     renderName () {
         return (
-            <div key="name" className="build-item-name">
+            <div key="name" className="build-slot-item-name">
                 {T.getIn(["name", lang])}
             </div>
         )
     },
     renderItemLevel() {
         return (
-            <div key="ilvl" className="build-item-ilvl">
+            <div key="ilvl" className="build-slot-item-ilvl">
                 {T.getIn(["ilvl", lang])}
             </div>
         )
     },
-    renderStats (jobStats) {
+    renderStats (jobStats, items) {
         return jobStats
-            .map(v => (
-                <div key={v} className="build-item-stat">
-                    {v}
-                </div>
-            ))
+            .map(v => {
+                var total = calculateBuildStat(items, v)
+
+                return (
+                    <div key={v} className="build-slot-item-stat">
+                        <span className="build-slot-item-stat-total">
+                            {total}
+                        </span>
+                        <span>
+                            {v}
+                        </span>
+                    </div>
+                )
+            })
             .values()
     }
 })

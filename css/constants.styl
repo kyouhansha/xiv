@@ -44,7 +44,7 @@ $textOpacity = {
     'disabled':  0.26
 }
 
-$fontSize = {
+$fontScale = {
     'button':   { 'size': 14px, 'weight': 500 },
     'caption':  { 'size': 12px, 'weight': 400 },
     'body1':    { 'size': 14px, 'weight': 400 },
@@ -64,6 +64,6 @@ getColor(color, hue = '500')
 
 /* mixins */
 
-applyFontSize(style)
-    font-size: $fontSize[style]['size']
-    font-weight: $fontSize[style]['weight']
+font-preset(value)
+    font-size: $fontScale[value]['size']
+    font-weight: $fontScale[value]['weight']

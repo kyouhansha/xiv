@@ -1,5 +1,10 @@
 import Immutable from 'immutable'
 
+export function calculateBuildStat (items, stat) {
+    return items
+        .reduce((r, v) => r += v.getIn(['stats', stat], 0), 0)
+}
+
 export function joinClassNames (names) {
     return Immutable.Seq(names)
         .filter((value, key) => value)

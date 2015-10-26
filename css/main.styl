@@ -39,9 +39,9 @@ button, input
     -webkit-appearance: none
 
 .action-text
-    applyFontSize('body2')
     align-items: center
     display: flex
+    font-preset: 'body2'
     min-width: 64px
     padding: 0px 8px
     justify-content: center
@@ -76,14 +76,14 @@ button, input
     width: 1080px
 
 .page-title
-    applyFontSize('headline')
+    font-preset: 'headline'
     padding: 1.5em 1em 1em
 
 .subheader
-    applyFontSize('body2')
     align-items: center
     color: getTextColor('secondary')
     display: flex
+    font-preset: 'body2'
     height: 48px
     padding: 16px
 
@@ -126,17 +126,6 @@ button, input
 
 .build-slot-name
     @extend .subheader
-    margin-top: 24px
-
-.build-stats
-    background-color: $color-canvas
-    bottom: 0px
-    box-shadow: inset 0px 1px $color-canvas--border
-    display: flex
-    left: 50vw
-    margin-left: -540px
-    position: fixed
-    width: 1080px
 
 .build-stat
     flex: 0 1 100%
@@ -145,26 +134,26 @@ button, input
     text-align: center
 
 .build-stat-label
-    applyFontSize('body2')
     color: getTextColor('secondary')
+    font-preset: 'body2'
     line-height: 24px
     text-transform: uppercase
 
 .build-stat-value
-    applyFontSize('headline')
+    font-preset: 'headline'
     line-height: 24px
 
-.build-items
+.build-slot-items
     display: block
     margin: 0px
     padding: 0px
 
-.build-item
-    applyFontSize('body1')
-    align-items: center
+.build-slot-item
+    align-items: stretch
     background-color: $color-table-row
     box-shadow: inset 0px -1px $color-divider
     display: flex
+    font-preset: 'body1'
     height: 48px
     list-style: none outside none
     margin: 0px
@@ -176,29 +165,22 @@ button, input
     &:hover
         background-color: $color-table-row--hover
 
-.build-item-image
-    background-color: getTextColor('secondary')
-    border-radius: 50%
-    height: 40px
-    margin-right: 16px
-    width: 40px
-
-.build-item-control
+.build-slot-item-control
     align-items: center
     display: flex
     flex: 0 0 66px
     justify-content: center
     min-width: 66px
 
-.build-item-name
+.build-slot-item-name
     align-items: center
     display: flex
     flex: 1 0 300px
     margin-right: 24px
     min-width: 300px
 
-.build-item-ilvl,
-.build-item-stat
+.build-slot-item-ilvl,
+.build-slot-item-stat
     align-items: center
     display: flex
     flex: 1 0 40px
@@ -210,7 +192,44 @@ button, input
     &:nth-last-of-type(1)
         margin-right: 24px
 
+.build-slot-item-stat-total
+    color: getTextColor('primary')
+    padding-right: 6px
+
 .build-table-header
-    applyFontSize('caption')
     color: getTextColor('secondary')
+    font-preset: 'caption'
     font-weight: 500
+
+    &:hover
+        background-color: $color-table-row
+
+.build-items
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-around
+
+.build-item
+    display: flex
+    padding: 16px
+    width: 320px
+
+.build-item-image
+    background-color: getTextColor('secondary')
+    border-radius: 50%
+    height: 40px
+    margin-right: 16px
+    width: 40px
+
+.build-item-name
+    align-items: center
+    display: flex
+    font-preset: 'body2'
+    height: 20px
+
+.build-item-subhead
+    align-items: center
+    color: getTextColor('secondary')
+    display: flex
+    font-preset: 'body2'
+    height: 20px

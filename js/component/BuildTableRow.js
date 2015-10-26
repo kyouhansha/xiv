@@ -8,7 +8,7 @@ import { toOrderedImmutable } from '../util'
 const lang = constants.get('lang')
 const zeroText = '--'
 
-var BuildItem = React.createClass({
+var BuildTableRow = React.createClass({
     render () {
         var { item, job, slot, ...props } = this.props
         var itemStats = item.get('stats')
@@ -30,21 +30,21 @@ var BuildItem = React.createClass({
     },
     renderControl () {
         return (
-            <div key="control" className="build-item-control">
+            <div key="control" className="build-slot-item-control">
                 <i className="icon icon--touch" data-icon="checkbox" />
             </div>
         )
     },
     renderName (item) {
         return (
-            <div key="name" className="build-item-name">
+            <div key="name" className="build-slot-item-name">
                 {item.getIn(['name', lang])}
             </div>
         )
     },
     renderItemLevel(item) {
         return (
-            <div key="ilvl" className="build-item-ilvl">
+            <div key="ilvl" className="build-slot-item-ilvl">
                 {item.get('item_level')}
             </div>
         )
@@ -52,7 +52,7 @@ var BuildItem = React.createClass({
     renderStats (itemStats, jobStats) {
         return jobStats
             .map(v => (
-                <div key={v} className="build-item-stat">
+                <div key={v} className="build-slot-item-stat">
                     {itemStats.get(v) || zeroText}
                 </div>
             ))
@@ -60,4 +60,4 @@ var BuildItem = React.createClass({
     }
 })
 
-export default BuildItem
+export default BuildTableRow
